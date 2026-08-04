@@ -1,0 +1,38 @@
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging & Distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+
+# Virtual Environments & Environments
+venv/
+env/
+ENV/
+.env
+
+# IDE & Editor Configurations
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs & Temporary Files
+*.log
+scratch/
+brain/
+.gemini/
+.system_generated/
+.antigravity/
+
+# Test Cache & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
