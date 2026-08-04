@@ -217,7 +217,7 @@ st.markdown("""
             </div>
         </div>
         <div style="margin-top: 5px;">
-            <a href="https://github.com" target="_blank" style="text-decoration: none;">
+            <a href="https://github.com/aravmendiratta/SSSL_HAR" target="_blank" style="text-decoration: none;">
                 <div style="display: inline-flex; align-items: center; background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%); border: 1px solid rgba(56, 189, 248, 0.5); border-radius: 9999px; padding: 10px 22px; color: #38BDF8; font-weight: 700; font-size: 0.95rem; transition: all 0.2s ease; box-shadow: 0 0 20px -5px rgba(56, 189, 248, 0.35); font-family: 'Outfit', sans-serif;">
                     <svg style="height: 22px; width: 22px; margin-right: 10px; fill: #38BDF8;" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.27-.01-1.13-.01-2.2-2.22.48-2.69-.94-2.86-1.34-.1-.26-.53-1.34-.88-1.53-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
                     Explore Source Code on GitHub &nbsp;↗
