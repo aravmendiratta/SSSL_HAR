@@ -31,34 +31,67 @@ st.set_page_config(
 
 CUSTOM_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-    color: #E2E8F0;
+/* High-contrast crisp white text across the entire application for mobile and desktop readability */
+html, body, [class*="css"], .stMarkdown, .stText, p, span, li, label, .stRadio label, .stCheckbox label, .stSelectbox label, .stSlider label, div[data-testid="stMarkdownContainer"] {
+    font-family: 'Inter', sans-serif !important;
+    color: #F8FAFC !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif !important;
     font-weight: 700 !important;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    color: #FFFFFF !important;
 }
 
 /* App Dark Background & Subtle Grid */
 .stApp {
-    background: radial-gradient(circle at 15% 25%, rgba(16, 185, 129, 0.05) 0%, transparent 45%),
-                radial-gradient(circle at 85% 75%, rgba(59, 130, 246, 0.08) 0%, transparent 45%),
+    background: radial-gradient(circle at 15% 25%, rgba(16, 185, 129, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 75%, rgba(59, 130, 246, 0.12) 0%, transparent 45%),
                 linear-gradient(135deg, #0A0D14 0%, #111823 50%, #0F1622 100%);
     background-attachment: fixed;
 }
 
+/* Ensure Streamlit input fields, selectboxes, dropdowns, and popovers stay dark with high-contrast bright white text */
+div[data-baseweb="select"] > div, 
+div[data-baseweb="base-input"] > input, 
+div[data-baseweb="popover"], 
+div[data-baseweb="menu"] {
+    background-color: #1E293B !important;
+    color: #FFFFFF !important;
+    border-color: rgba(56, 189, 248, 0.4) !important;
+}
+
+div[data-baseweb="menu"] li, div[data-baseweb="menu"] span, div[data-baseweb="select"] span {
+    color: #FFFFFF !important;
+    font-size: 0.95rem !important;
+}
+
+div[data-baseweb="menu"] li:hover {
+    background-color: #38BDF8 !important;
+    color: #0F172A !important;
+}
+
+/* Blockquotes styled for maximum contrast and elegance */
+blockquote {
+    border-left: 4px solid #38BDF8 !important;
+    background: rgba(30, 41, 59, 0.65) !important;
+    padding: 1rem 1.5rem !important;
+    border-radius: 0 12px 12px 0 !important;
+    color: #F8FAFC !important;
+    font-size: 1.05rem !important;
+    font-weight: 500 !important;
+}
+
 /* Glowing Neon Header */
 .title-container {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 35px -5px rgba(59, 130, 246, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.15);
     border-radius: 20px;
-    padding: 2rem 2.5rem;
+    padding: 2.2rem 2.5rem;
     margin-bottom: 2rem;
     backdrop-filter: blur(12px);
     position: relative;
@@ -68,7 +101,7 @@ h1, h2, h3, h4, h5, h6 {
 .title-container::after {
     content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; height: 3px;
+    top: 0; left: 0; right: 0; height: 4px;
     background: linear-gradient(90deg, #00F2FE, #4FACFE, #10B981, #A855F7);
 }
 
@@ -77,62 +110,69 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, #FFFFFF 0%, #7DD3FC 50%, #34D399 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.6rem !important;
+    font-weight: 800 !important;
 }
 
 .subtitle {
-    font-size: 1.1rem;
-    color: #94A3B8;
-    font-weight: 400;
+    font-size: 1.15rem !important;
+    color: #F1F5F9 !important;
+    font-weight: 500 !important;
+    line-height: 1.5;
 }
 
 /* Glassmorphism Metric Cards & Hover Animations */
 .metric-card {
-    background: rgba(30, 41, 59, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(30, 41, 59, 0.75);
+    border: 1px solid rgba(125, 211, 252, 0.25);
     border-radius: 16px;
-    padding: 1.25rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    padding: 1.4rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
 }
 
 .metric-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(59, 130, 246, 0.4);
-    box-shadow: 0 20px 30px -10px rgba(59, 130, 246, 0.25);
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 20px 30px -10px rgba(56, 189, 248, 0.35);
 }
 
 .card-title {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #64748B;
-    margin-bottom: 0.25rem;
-    font-weight: 600;
+    color: #7DD3FC !important;
+    margin-bottom: 0.4rem;
+    font-weight: 700 !important;
 }
 
 .card-value {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #38BDF8;
+    font-size: 2.0rem;
+    font-weight: 800;
+    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #FFFFFF 0%, #38BDF8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-family: 'Outfit', sans-serif;
 }
 
 .card-desc {
-    font-size: 0.85rem;
-    color: #94A3B8;
-    margin-top: 0.25rem;
+    font-size: 0.95rem;
+    color: #F1F5F9 !important;
+    margin-top: 0.35rem;
+    font-weight: 500 !important;
 }
 
 /* Hero Tabs Styling - Making Subtabs the Centerpiece */
 .stTabs [data-baseweb="tab-list"] {
     gap: 16px;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 100%);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
     padding: 12px 18px;
     border-radius: 20px;
-    border: 2px solid rgba(59, 130, 246, 0.35);
-    box-shadow: 0 0 35px -10px rgba(59, 130, 246, 0.3);
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 35px -10px rgba(59, 130, 246, 0.35);
+    flex-wrap: wrap;
 }
 
 .stTabs [data-baseweb="tab"] {
@@ -140,18 +180,18 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 14px;
     padding: 0 26px;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.05rem !important;
+    font-size: 1.1rem !important;
     font-weight: 700;
-    color: #94A3B8;
+    color: #F1F5F9 !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    color: #38BDF8 !important;
-    background: rgba(59, 130, 246, 0.15);
-    border-color: rgba(59, 130, 246, 0.4);
+    color: #FFFFFF !important;
+    background: rgba(56, 189, 248, 0.25);
+    border-color: rgba(56, 189, 248, 0.6);
     transform: translateY(-2px);
 }
 
@@ -166,21 +206,22 @@ h1, h2, h3, h4, h5, h6 {
 /* Button micro-interactions */
 .stButton > button {
     border-radius: 12px;
-    font-weight: 600;
+    font-weight: 700 !important;
+    font-size: 1.02rem !important;
     font-family: 'Outfit', sans-serif;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-    color: white;
-    border: none;
-    padding: 0.6rem 1.4rem;
+    background: linear-gradient(135deg, #38BDF8 0%, #2563EB 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 0.7rem 1.6rem;
 }
 
 .stButton > button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.6);
+    box-shadow: 0 8px 22px -4px rgba(56, 189, 248, 0.7) !important;
 }
 
-/* Tables styling */
+/* Tables styling with high contrast readability */
 div[data-testid="stTable"] table {
     border-collapse: separate;
     border-spacing: 0 8px;
@@ -191,17 +232,32 @@ div[data-testid="stTable"] th {
     background-color: #1E293B !important;
     color: #38BDF8 !important;
     font-family: 'Outfit', sans-serif;
-    padding: 12px !important;
-    font-weight: 700 !important;
+    padding: 14px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    border: 1px solid rgba(56, 189, 248, 0.3) !important;
 }
 
 div[data-testid="stTable"] td {
-    background-color: rgba(30, 41, 59, 0.4) !important;
-    padding: 12px !important;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    background-color: rgba(30, 41, 59, 0.65) !important;
+    color: #FFFFFF !important;
+    padding: 14px !important;
+    font-size: 1.02rem !important;
+    font-weight: 600 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
+/* High contrast metric labels in Streamlit columns */
+div[data-testid="stMetricLabel"] p {
+    color: #7DD3FC !important;
+    font-size: 1.0rem !important;
+    font-weight: 700 !important;
+}
+div[data-testid="stMetricValue"] {
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -233,7 +289,7 @@ c1, c2, c3, c4 = st.columns(4)
 with c1:
     st.markdown("""<div class="metric-card"><div class="card-title">Core Paradigm</div><div class="card-value">MVCL</div><div class="card-desc">Multi-View Contrastive Alignment</div></div>""", unsafe_allow_html=True)
 with c2:
-    st.markdown("""<div class="metric-card"><div class="card-title">Synthesis Basis</div><div class="card-value">Eq. (1) & (2)</div><div class="card-desc">Smoothed Kinematic Differentiation</div></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="metric-card"><div class="card-title">Synthesis Engine</div><div class="card-value">3D-to-IMU</div><div class="card-desc">Smoothed Kinematic Simulation</div></div>""", unsafe_allow_html=True)
 with c3:
     st.markdown("""<div class="metric-card"><div class="card-title">CroSSL-Synth</div><div class="card-value">88.15%</div><div class="card-desc">PAMAP2 3ACC+3GYRO Accuracy</div></div>""", unsafe_allow_html=True)
 with c4:
@@ -246,15 +302,15 @@ st.markdown("We designed this research dashboard to be fully intuitive and inter
 # 5 Hero Guide Cards for Reviewers
 r1, r2, r3, r4, r5 = st.columns(5)
 with r1:
-    st.markdown("""<div style="background: rgba(30,41,59,0.45); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #F87171; padding: 0.9rem; border-radius: 10px; height: 100%;"><b style="color: #F87171; font-size: 0.95rem;">💡 1. Why & What</b><br><span style="font-size: 0.82rem; color: #94A3B8;">Core motivation, problem statement & system architecture.</span></div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.15); border-left: 5px solid #F87171; padding: 1.1rem; border-radius: 12px; height: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.25);"><b style="color: #F87171; font-size: 1.05rem;">💡 1. Why & What</b><br><span style="font-size: 0.95rem; color: #F8FAFC; font-weight: 500; line-height: 1.5;">Core motivation, problem statement & system architecture.</span></div>""", unsafe_allow_html=True)
 with r2:
-    st.markdown("""<div style="background: rgba(30,41,59,0.45); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #38BDF8; padding: 0.9rem; border-radius: 10px; height: 100%;"><b style="color: #38BDF8; font-size: 0.95rem;">🔬 2. Synthesis Lab</b><br><span style="font-size: 0.82rem; color: #94A3B8;">Interactive generator for 3D trajectories & PNP noise.</span></div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.15); border-left: 5px solid #38BDF8; padding: 1.1rem; border-radius: 12px; height: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.25);"><b style="color: #38BDF8; font-size: 1.05rem;">🔬 2. Synthesis Lab</b><br><span style="font-size: 0.95rem; color: #F8FAFC; font-weight: 500; line-height: 1.5;">Interactive generator for 3D trajectories & PNP noise.</span></div>""", unsafe_allow_html=True)
 with r3:
-    st.markdown("""<div style="background: rgba(30,41,59,0.45); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #A855F7; padding: 0.9rem; border-radius: 10px; height: 100%;"><b style="color: #A855F7; font-size: 0.95rem;">🚀 3. MVCL Studio</b><br><span style="font-size: 0.82rem; color: #94A3B8;">Run pretraining & visualize 2D t-SNE clusters (Fig. 3).</span></div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.15); border-left: 5px solid #A855F7; padding: 1.1rem; border-radius: 12px; height: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.25);"><b style="color: #C084FC; font-size: 1.05rem;">🚀 3. MVCL Studio</b><br><span style="font-size: 0.95rem; color: #F8FAFC; font-weight: 500; line-height: 1.5;">Run pretraining & visualize 2D t-SNE clusters (Fig. 3).</span></div>""", unsafe_allow_html=True)
 with r4:
-    st.markdown("""<div style="background: rgba(30,41,59,0.45); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #34D399; padding: 0.9rem; border-radius: 10px; height: 100%;"><b style="color: #34D399; font-size: 0.95rem;">📊 4. Benchmarks</b><br><span style="font-size: 0.82rem; color: #94A3B8;">Inspect exact verified metrics matching Tables 1 & 2.</span></div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.15); border-left: 5px solid #34D399; padding: 1.1rem; border-radius: 12px; height: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.25);"><b style="color: #34D399; font-size: 1.05rem;">📊 4. Benchmarks</b><br><span style="font-size: 0.95rem; color: #F8FAFC; font-weight: 500; line-height: 1.5;">Inspect exact verified metrics matching Tables 1 & 2.</span></div>""", unsafe_allow_html=True)
 with r5:
-    st.markdown("""<div style="background: rgba(30,41,59,0.45); border: 1px solid rgba(255,255,255,0.05); border-left: 4px solid #F59E0B; padding: 0.9rem; border-radius: 8px; height: 100%;"><b style="color: #F59E0B; font-size: 0.95rem;">⚙️ 5. Robustness</b><br><span style="font-size: 0.82rem; color: #94A3B8;">Ablation charts on sensor placement & frequency shifts.</span></div>""", unsafe_allow_html=True)
+    st.markdown("""<div style="background: rgba(30,41,59,0.7); border: 1px solid rgba(255,255,255,0.15); border-left: 5px solid #FBBF24; padding: 1.1rem; border-radius: 12px; height: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.25);"><b style="color: #FBBF24; font-size: 1.05rem;">⚙️ 5. Robustness</b><br><span style="font-size: 0.95rem; color: #F8FAFC; font-weight: 500; line-height: 1.5;">Ablation charts on sensor placement & frequency shifts.</span></div>""", unsafe_allow_html=True)
 
 st.write("")
 
@@ -277,28 +333,28 @@ with tab0:
     col_mot1, col_mot2 = st.columns(2)
     with col_mot1:
         st.markdown("""
-        <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 16px; padding: 1.5rem; height: 100%; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);">
-            <h3 style="color: #F87171; margin-bottom: 0.8rem; font-size: 1.3rem;">🚨 The Real-World Bottleneck</h3>
-            <p style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.6;">
+        <div style="background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(248, 113, 113, 0.4); border-radius: 16px; padding: 1.6rem; height: 100%; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.35);">
+            <h3 style="color: #F87171 !important; margin-bottom: 1rem; font-size: 1.4rem;">🚨 The Real-World Bottleneck</h3>
+            <p style="color: #FFFFFF !important; font-size: 1.05rem; font-weight: 500; line-height: 1.6;">
                 Building accurate Human Activity Recognition (HAR) algorithms (such as fall detection for elderly care, rehabilitation tracking, or athletic workout evaluation) suffers from two fundamental limitations in physical deployment:
             </p>
-            <ul style="color: #94A3B8; font-size: 0.92rem; line-height: 1.7;">
-                <li><b>Data Collection is Exhausting:</b> Gathering labeled IMU sensor streams requires human subjects wearing rigid sensor rigs in controlled lab environments. Collecting and cleaning this real-world data is slow, expensive, and difficult to scale.</li>
-                <li><b>Extreme Hardware Brittleness:</b> Standard neural networks fail completely when a user wears a different smartwatch brand, changes sampling rates (e.g., from 148Hz to 60Hz), or shifts the strap half an inch up their arm.</li>
+            <ul style="color: #F8FAFC; font-size: 1.02rem; line-height: 1.8; margin-top: 0.5rem;">
+                <li style="margin-bottom: 0.8rem;"><b style="color: #FCA5A5;">Data Collection is Exhausting:</b> Gathering labeled IMU sensor streams requires human subjects wearing rigid sensor rigs in controlled lab environments. Collecting and cleaning this real-world data is slow, expensive, and difficult to scale.</li>
+                <li><b style="color: #FCA5A5;">Extreme Hardware Brittleness:</b> Standard neural networks fail completely when a user wears a different smartwatch brand, changes sampling rates (e.g., from 148Hz to 60Hz), or shifts the strap half an inch up their arm.</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
         
     with col_mot2:
         st.markdown("""
-        <div style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 16px; padding: 1.5rem; height: 100%; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.2);">
-            <h3 style="color: #34D399; margin-bottom: 0.8rem; font-size: 1.3rem;">💡 The SSSL-HAR Breakthrough</h3>
-            <p style="color: #CBD5E1; font-size: 0.95rem; line-height: 1.6;">
+        <div style="background: rgba(30, 41, 59, 0.75); border: 1px solid rgba(52, 211, 153, 0.4); border-radius: 16px; padding: 1.6rem; height: 100%; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.35);">
+            <h3 style="color: #34D399 !important; margin-bottom: 1rem; font-size: 1.4rem;">💡 The SSSL-HAR Breakthrough</h3>
+            <p style="color: #FFFFFF !important; font-size: 1.05rem; font-weight: 500; line-height: 1.6;">
                 <b>SSSL-HAR</b> bypasses real-world sensor collection almost entirely by combining physics-informed simulation with self-supervised feature learning:
             </p>
-            <ul style="color: #94A3B8; font-size: 0.92rem; line-height: 1.7;">
-                <li><b>Zero-Cost Synthetic Data Pre-training:</b> We synthesize infinite inertial signals directly from publicly available 3D motion capture surface models (e.g., AMASS/SMPL), complete with realistic MEMS sensor bias drift and noise.</li>
-                <li><b>Universal Sensor Generalization:</b> By contrasting multiple synchronous sensor views (MVCL), the artificial intelligence learns biomechanically invariant motion profiles—adapting seamlessly to brand new devices and user body placements with a mere <b>~10 to 30 minutes</b> of target calibration data!</li>
+            <ul style="color: #F8FAFC; font-size: 1.02rem; line-height: 1.8; margin-top: 0.5rem;">
+                <li style="margin-bottom: 0.8rem;"><b style="color: #6EE7B7;">Zero-Cost Synthetic Data Pre-training:</b> We synthesize infinite inertial signals directly from publicly available 3D motion capture surface models (e.g., AMASS/SMPL), complete with realistic MEMS sensor bias drift and noise.</li>
+                <li><b style="color: #6EE7B7;">Universal Sensor Generalization:</b> By contrasting multiple synchronous sensor views (MVCL), the artificial intelligence learns biomechanically invariant motion profiles—adapting seamlessly to brand new devices and user body placements with a mere <b style="color: #A7F3D0;">~10 to 30 minutes</b> of target calibration data!</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -312,17 +368,17 @@ with tab0:
         st.markdown("""
         #### 1️⃣ Virtual IMU Synthesis
         Based on the biomechanical principle of **Spatial Sparsity**, tracking trajectories of sparse anatomical joints provides sufficient fidelity for motion characterization.
-        * **Smoothed Differentiation (Eq. 1):** Eliminates non-physical motion capture jumpiness using an adjustable interval parameter $n$.
-        * **Local Coordinate Frame Mapping (Eq. 2):** Projects global acceleration vectors into localized rotating sensor frames experiencing world gravity ($g = -9.81 m/s^2$).
-        * **PNP Physical Noise Modeling:** Injects random walk sensor bias and Gaussian white noise to replicate real commercial wearable chips.
+        * **Smoothed Kinematic Differentiation:** Eliminates non-physical motion capture jumpiness and high-frequency artifacts using an adjustable interval window ($n$).
+        * **Local Sensor Frame Projection:** Dynamically maps global 3D acceleration vectors into localized rotating wearable sensor frames experiencing real-world gravity ($g = -9.81 m/s^2$).
+        * **PNP Physical Noise Modeling:** Injects random walk sensor bias drift and Gaussian white noise to accurately replicate real commercial MEMS wearable chips.
         """)
     with c_arch2:
         st.markdown("""
         #### 2️⃣ Multi-View Contrastive Learning
         Based on the biomechanical principle of **Temporal Coherence**, independent sensors (wrist, chest, ankle) capture synchronous kinematic expressions of the exact same action.
-        * **CroSSL (VICReg Loss):** Applies random latent spatial masking across sensor views and optimizes variance, covariance, and invariance (**Eqs 6–9**).
-        * **COCOA Alignment:** Aligns cross-view features at identical timesteps as hard positives while repelling mismatched times (**Eqs 3–5**).
-        * **No Annotation Required:** Learns state-of-the-art representations without human labeling or tedious video-IMU pairing.
+        * **CroSSL Representation Learning:** Applies random latent spatial masking across sensor views and optimizes variance, covariance, and structural invariance.
+        * **COCOA Temporal Alignment:** Synchronizes cross-view multi-sensor features at identical timesteps as hard positives while repelling mismatched timestamps.
+        * **No Annotation Required:** Learns state-of-the-art feature representations without human labeling or tedious video-IMU pairing.
         """)
     with c_arch3:
         st.markdown("""
@@ -348,7 +404,7 @@ with tab1:
         act_key = act_type.split()[0]
         
         sim_sample_rate = st.slider("Sampling Frequency (Hz)", 40, 150, 60, step=10, help="Standard AMASS downscaled frequency is 60Hz")
-        smoothing_n = st.slider("Smoothing Parameter *n* (Eq. 1)", 1, 10, 4, help="Controls attenuation of motion capture positional discontinuites. n=4 is optimal in paper.")
+        smoothing_n = st.slider("Kinematic Smoothing Window (n)", 1, 10, 4, help="Controls attenuation of motion capture positional discontinuities. n=4 is recommended in paper.")
         
         add_noise = st.checkbox("Inject Physical PNP Noise", value=True, help="Simulates random walk sensor bias + Gaussian white noise")
         acc_noise_std = 0.05
@@ -381,7 +437,7 @@ with tab1:
         for idx, axis in enumerate(["X-Axis (Local Forward)", "Y-Axis (Local Lateral)", "Z-Axis (Vertical / Gravity)"]):
             fig_acc.add_trace(go.Scatter(x=t_axis, y=acc_sig[:, idx], name=axis, mode="lines", line=dict(color=colors[idx], width=2)))
         fig_acc.update_layout(
-            title=f"📐 Synthesized Accelerometer Reading ({view_sel}) - Local Frame Eq. (2)",
+            title=f"📐 Synthesized Accelerometer Reading ({view_sel}) - Local Sensor Frame Projection",
             xaxis_title="Time (seconds)", yaxis_title="Acceleration (m/s²)",
             template="plotly_dark", paper_bgcolor="rgba(20,24,33,1)", plot_bgcolor="rgba(15,18,25,1)",
             height=280, margin=dict(l=40, r=40, t=50, b=30), font=dict(family="Inter")
