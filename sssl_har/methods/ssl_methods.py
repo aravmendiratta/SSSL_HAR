@@ -40,7 +40,7 @@ class CroSSLMethod(BaseSSLMethod):
         # Ensure at least one sensor view remains unmasked per sample in batch
         all_zeros = (mask.sum(dim=1) == 0)
         if all_zeros.any():
-            random_idx = torch.randint(0, num_views, (all_zeros.sum(),), device=device)
+            random_idx = torch.randint(0, num_views, (all_zeros.sum().item(),), device=device)
             mask[all_zeros, random_idx] = 1.0
         return mask
 
