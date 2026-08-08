@@ -16,6 +16,34 @@ export default function Home() {
     duration_sec: 4.0
   });
 
+  // Tab 2 (MVCL) State
+  const [mvclLoading, setMvclLoading] = useState(false);
+  const [mvclData, setMvclData] = useState(null);
+  const [mvclConfig, setMvclConfig] = useState({
+    ssl_algo: "CroSSL (VICReg with latent masking)",
+    pretrain_src: "Synthetic Data (SSSL-HAR Innovation)",
+    target_ds: "PAMAP2 Benchmark (11 Activities)"
+  });
+
+  const handleRunExperiment = async () => {
+    setMvclLoading(true);
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/api/experiment/run`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(mvclConfig)
+      });
+      const data = await res.json();
+      setMvclData(data);
+    } catch (e) {
+      console.error(e);
+      alert("Failed to run experiment.");
+    } finally {
+      setMvclLoading(false);
+    }
+  };
+
   const handleSynthesize = async () => {
     setSimLoading(true);
     try {
@@ -128,6 +156,96 @@ export default function Home() {
     )
   }
 
+  const formatScatterData = (embeds, preds, classNames) => {
+    if (!embeds || !preds) return [];
+    const grouped = {};
+    classNames.forEach((name, i) => grouped[i] = { name, data: [] });
+    embeds.forEach((emb, i) => {
+      const classIdx = preds[i];
+      if (grouped[classIdx]) grouped[classIdx].data.push({ x: emb[0], y: emb[1] });
+    });
+    return Object.values(grouped).filter(g => g.data.length > 0);
+  };
+  
+  const COLORS = ["#38BDF8", "#34D399", "#F472B6", "#A855F7", "#FBBF24", "#F87171", "#818CF8", "#4ADE80", "#C084FC", "#FACC15", "#2DD4BF", "#FB923C", "#E879F9"];
+
+  const renderMVCLStudio = () => {
+    const groupedData = mvclData ? formatScatterData(mvclData.embeds, mvclData.preds, mvclData.class_names) : [];
+    return (
+      <div className="grid-2">
+        <div className="panel">
+          <h3 style={{marginBottom: "1.5rem"}}>🎯 Representation Configuration</h3>
+          
+          <div className="form-group">
+            <label>Select Pre-training Framework</label>
+            <select style={{width: "100%"}} value={mvclConfig.ssl_algo} onChange={e => setMvclConfig({...mvclConfig, ssl_algo: e.target.value})}>
+              <option>CroSSL (VICReg with latent masking)</option>
+              <option>COCOA (Cross-modal contrastive alignment)</option>
+              <option>SimCLR (Noise + scale augmentation)</option>
+              <option>CPC (Contrastive predictive coding)</option>
+              <option>Supervised Baseline (End-to-End without SSL)</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Pre-training Source Data</label>
+            <select style={{width: "100%"}} value={mvclConfig.pretrain_src} onChange={e => setMvclConfig({...mvclConfig, pretrain_src: e.target.value})}>
+              <option>Synthetic Data (SSSL-HAR Innovation)</option>
+              <option>Real Unlabeled Data (Traditional SSL)</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>Target Activity Dataset</label>
+            <select style={{width: "100%"}} value={mvclConfig.target_ds} onChange={e => setMvclConfig({...mvclConfig, target_ds: e.target.value})}>
+              <option>PAMAP2 Benchmark (11 Activities)</option>
+              <option>Custom Fitness (25 Exercises)</option>
+            </select>
+          </div>
+
+          <button className="btn-primary" style={{width: "100%", marginTop: "1.5rem"}} onClick={handleRunExperiment} disabled={mvclLoading}>
+            {mvclLoading ? "Extracting..." : "✨ Extract & Render t-SNE Embeddings"}
+          </button>
+        </div>
+
+        <div className="panel">
+          {mvclData ? (
+            <div>
+              <h3 style={{marginBottom: "1rem"}}>🌌 t-SNE Representation Clustering</h3>
+              <div style={{height: "350px", width: "100%"}}>
+                <ResponsiveContainer>
+                  <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)"/>
+                    <XAxis type="number" dataKey="x" name="t-SNE 1" stroke="#cbd5e1" tick={false}/>
+                    <YAxis type="number" dataKey="y" name="t-SNE 2" stroke="#cbd5e1" tick={false}/>
+                    <RechartsTooltip cursor={{strokeDasharray: '3 3'}} contentStyle={{backgroundColor: "#1E293B", border: "1px solid #38BDF8"}}/>
+                    <Legend wrapperStyle={{fontSize: "12px"}}/>
+                    {groupedData.map((group, i) => (
+                      <Scatter key={group.name} name={group.name} data={group.data} fill={COLORS[i % COLORS.length]} />
+                    ))}
+                  </ScatterChart>
+                </ResponsiveContainer>
+              </div>
+              
+              <div style={{display: "flex", justifyContent: "space-between", marginTop: "1.5rem", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1rem"}}>
+                {["Acc", "Recall", "Prec", "F1_M", "F1_W"].map(metric => (
+                  <div key={metric} style={{textAlign: "center"}}>
+                    <div style={{color: "#7DD3FC", fontSize: "0.85rem", fontWeight: "bold"}}>{metric}</div>
+                    <div style={{color: "#FFF", fontSize: "1.1rem", fontWeight: "bold"}}>{mvclData.metrics[metric]}%</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{display: "flex", height: "100%", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", padding: "2rem", textAlign: "center"}}>
+              Click "Extract & Render" to run the multi-view encoder pipeline and generate t-SNE clusters in real-time.
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <main className="container">
       <div className="title-container">
@@ -173,12 +291,7 @@ export default function Home() {
 
       {activeTab === 1 && renderSynthesisLab()}
       
-      {activeTab === 2 && (
-        <div className="panel" style={{textAlign: "center", padding: "4rem"}}>
-          <h3>🚀 Coming Soon</h3>
-          <p style={{color: "var(--text-secondary)", marginTop: "1rem"}}>The MVCL t-SNE Studio is currently being migrated from Streamlit. Run the backend API to access the ML training routines.</p>
-        </div>
-      )}
+      {activeTab === 2 && renderMVCLStudio()}
 
       {activeTab === 3 && (
         <div className="panel">
