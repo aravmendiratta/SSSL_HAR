@@ -134,3 +134,7 @@ def run_experiment(req: ExperimentRequest):
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+@app.get("/")
+def read_root():
+    return {"message": "SSSL-HAR Backend API is running. Go to /docs for Swagger UI."}
