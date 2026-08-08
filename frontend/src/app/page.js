@@ -19,8 +19,9 @@ export default function Home() {
   const handleSynthesize = async () => {
     setSimLoading(true);
     try {
-      // In production this would point to your hosted FastAPI server (e.g. on Render)
-      const res = await fetch("http://localhost:8000/api/synthesize", {
+      // Use environment variable for production (Render), fallback to localhost for development
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${API_URL}/api/synthesize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(simConfig)
